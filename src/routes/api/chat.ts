@@ -18,6 +18,14 @@ ${buildKnowledgeContext()}`;
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+const MODES: Record<string, string> = {
+  portfolio: "MODE: Portfolio Assistant. Answer questions about Heba's verified background, education, experience, skills, training, and projects.",
+  recommend:
+    "MODE: Project Recommendation. If the visitor has not yet described what they want to build, briefly ask them. Otherwise recommend the single most relevant project from the portfolio (optionally one runner-up) and explain why, citing its documented technologies and features. If nothing is relevant, say so honestly.",
+  fit: "MODE: Career Fit. The visitor describes a role, project, or requirement. List which of Heba's documented skills and experiences are relevant, grouped under: **Demonstrated in project work** (CMWU real-world graduation project; educational projects FreelanGo/Edukate, labelled as educational), **Training**, and **Academic coursework**. Explicitly list requirements that the portfolio does not show evidence for. Never claim professional/paid experience from coursework or training.",
+  work: "MODE: Ask About My Work. Open-ended follow-up questions about projects, implementation choices, technologies, and documented contributions. Use the conversation history for follow-ups.",
+};
+
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
@@ -26,8 +34,10 @@ export const Route = createFileRoute("/api/chat")({
         if (!key) return Response.json({ error: "The assistant is not configured yet (missing AI key)." }, { status: 500 });
 
         let messages: Msg[];
+        let mode = "portfolio";
         try {
           const body = await request.json();
+          if (typeof body?.mode === "string" && body.mode in MODES) mode = body.mode;
           messages = (Array.isArray(body?.messages) ? body.messages : [])
             .filter((m: Msg) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
             .slice(-20)
@@ -49,7 +59,7 @@ export const Route = createFileRoute("/api/chat")({
           },
           body: JSON.stringify({
             model: "openai/gpt-6-astra",
-            instructions: SYSTEM(),
+            instructions: `${SYSTEM()}\n\n${MODES[mode]}`,
             input: messages.map((m) => ({ role: m.role, content: m.content })),
             reasoning: { effort: "low" },
             store: false,
