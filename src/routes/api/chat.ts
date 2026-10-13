@@ -85,7 +85,7 @@ export const Route = createFileRoute("/api/chat")({
           },
           body: JSON.stringify({
             model: "openai/gpt-6-astra",
-            instructions: `${SYSTEM()}\n\n${MODES[mode]}`,
+            instructions: `${MODES[mode]}\n\n${SYSTEM()}\n\n${MODES[mode]}\nFollow the ACTIVE MODE structure above for this reply, even if earlier replies in the conversation used a different mode.`,
             input: messages.map((m) => ({ role: m.role, content: m.content })),
             reasoning: { effort: "low" },
             store: false,
