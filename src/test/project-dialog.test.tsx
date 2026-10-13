@@ -27,7 +27,7 @@ describe("Project dialogs", () => {
     render(<ProjectCard p={p} index={0} />);
     for (const name of ["Close dialog", "Close"]) {
       fireEvent.click(screen.getByRole("button", { name: "View details" }));
-      fireEvent.click(screen.getByRole("button", { name, exact: true }));
+      fireEvent.click(screen.getByRole("button", { name }));
       await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     }
   });
