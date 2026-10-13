@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- All portfolio content lives in src/content/portfolioContent.ts; the page and the AI assistant (/api/chat) both read from it so they never disagree.
