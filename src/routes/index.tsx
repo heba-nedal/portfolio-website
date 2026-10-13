@@ -1,6 +1,8 @@
+import type React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, FileText, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { ArrowRight, Bot, Braces, Database, FileText, Layers, Server, type LucideIcon, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { useReveal } from "@/hooks/use-reveal";
 import { profile, contact, skills, projects, experience, education, training, assistant } from "@/content/portfolioContent";
 import { OptionalImage, useImageAvailable } from "@/components/portfolio/OptionalImage";
 import { Assistant } from "@/components/portfolio/Assistant";
@@ -28,9 +30,18 @@ const NAV = [
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
+const SKILL_ICONS: Record<string, LucideIcon> = {
+  "Backend Development": Server,
+  "Database Development": Database,
+  "Web Development": Braces,
+  "Laravel Application Features": Layers,
+  "AI and Intelligent Automation": Bot,
+  "Software Engineering Foundations": GraduationCap,
+};
+
 function SectionHead({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div className="mb-10">
+    <div className="reveal mb-10">
       <p className="eyebrow mb-3">{eyebrow}</p>
       <h2 className="text-3xl font-medium sm:text-4xl">{title}</h2>
     </div>
@@ -73,13 +84,14 @@ function Hero() {
         <p className="mt-5 max-w-xl text-muted-foreground">{profile.heroSupport}</p>
         <p className="mt-5 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4" aria-hidden /> {profile.location}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <a href="#projects" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90">View My Projects <ArrowRight className="h-4 w-4" /></a>
-          <a href="#assistant" className="rounded-md border px-5 py-3 text-sm font-medium hover:border-primary hover:text-primary">Ask My AI Assistant</a>
-          <a href="#contact" className="rounded-md border px-5 py-3 text-sm font-medium hover:border-primary hover:text-primary">Contact Me</a>
+          <a href="#projects" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">View My Projects <ArrowRight className="h-4 w-4" /></a>
+          <a href="#assistant" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Ask My AI Assistant</a>
+          <a href="#contact" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Contact Me</a>
         </div>
       </div>
       <div className="mx-auto w-full max-w-xs">
-        <div className="aspect-[4/5] overflow-hidden rounded-xl border bg-surface">
+        <div className="portrait-frame">
+        <div className="aspect-[4/5] overflow-hidden rounded-xl bg-surface">
           <OptionalImage
             src={profile.photo}
             alt={`Portrait of ${profile.name}`}
@@ -90,6 +102,7 @@ function Hero() {
               </div>
             }
           />
+        </div>
         </div>
       </div>
     </section>
@@ -125,6 +138,7 @@ function Certificate() {
 }
 
 function Index() {
+  useReveal();
   const u = education.university;
   const s = education.secondary;
   return (
@@ -144,14 +158,22 @@ function Index() {
         <section id="skills" className="border-t">
           <div className="mx-auto max-w-6xl px-5 py-20">
             <SectionHead eyebrow="02 — Skills" title="Skills & technologies" />
-            <div className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-3">
-              {skills.map((g) => (
-                <div key={g.name} className="bg-card p-6">
-                  <h3 className="font-sans text-sm font-semibold">{g.name}</h3>
-                  <p className="mb-4 mt-1 font-mono text-[0.7rem] uppercase tracking-wider text-muted-foreground">{g.kind === "foundation" ? "Academic foundation" : "Used in projects & training"}</p>
-                  <ul className="flex flex-wrap gap-2">{g.items.map((i) => <li key={i} className="chip">{i}</li>)}</ul>
-                </div>
-              ))}
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {skills.map((g, idx) => {
+                const Icon = SKILL_ICONS[g.name] ?? Layers;
+                return (
+                  <div key={g.name} className="skill-card reveal flex flex-col rounded-xl border p-6" style={{ "--i": idx } as React.CSSProperties}>
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary/10 text-primary"><Icon className="h-4 w-4" aria-hidden /></span>
+                      <div>
+                        <h3 className="font-sans text-base font-semibold leading-snug">{g.name}</h3>
+                        <p className="mt-1 font-mono text-[0.68rem] uppercase tracking-wider text-muted-foreground">{g.kind === "foundation" ? "Academic foundation" : "Used in projects & training"}</p>
+                      </div>
+                    </div>
+                    <ul className="mt-5 flex flex-wrap gap-2 border-t border-primary/15 pt-5">{g.items.map((i) => <li key={i} className="skill-badge rounded-full px-3 py-1 text-[0.8rem]">{i}</li>)}</ul>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -159,7 +181,7 @@ function Index() {
         <section id="projects" className="border-t">
           <div className="mx-auto max-w-6xl px-5 py-20">
             <SectionHead eyebrow="03 — Projects" title="Selected projects" />
-            <div className="grid gap-6 md:grid-cols-2">{projects.map((p, i) => <ProjectCard key={p.id} p={p} index={i} />)}</div>
+            <div className="grid gap-6 md:grid-cols-2">{projects.map((p, i) => <div key={p.id} className="reveal flex" style={{ "--i": i } as React.CSSProperties}><ProjectCard p={p} index={i} /></div>)}</div>
           </div>
         </section>
 

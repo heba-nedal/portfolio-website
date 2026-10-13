@@ -14,7 +14,7 @@ const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 export function ProjectCard({ p, index }: { p: Project; index: number }) {
   return (
     <Dialog>
-      <article className="flex min-w-0 flex-col overflow-hidden rounded-xl border bg-card transition-colors hover:border-primary/40">
+      <article className="flex w-full min-w-0 flex-col overflow-hidden rounded-xl border bg-card transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_12px_32px_-20px_var(--color-primary)] motion-reduce:hover:translate-y-0">
         <div className="aspect-video shrink-0 overflow-hidden border-b bg-surface">
           <OptionalImage src={p.screenshot} alt={`${p.title} screenshot`} className="h-full w-full object-cover object-top" fallback={
             <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground" role="img" aria-label={`${p.title}: screenshot not yet added`}>
