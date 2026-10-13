@@ -222,9 +222,22 @@ export const training = [
   { title: "Academic Foundations", organization: "Al-Azhar University – Gaza", period: "Coursework", description: "Computer Systems Engineering coursework covering databases, data structures, algorithms, requirements engineering, software design, software testing, and related subjects." },
 ] as { title: string; organization: string; period: string; description: string; items?: string[] }[];
 
+export type AssistantMode = "portfolio" | "recommend" | "fit" | "work";
+
 export const assistant = {
-  title: "Ask About My Work",
-  subtitle: "Have a question about my skills, projects, or background? Ask the portfolio assistant.",
+  title: "Ask Me About My Work",
+  subtitle: "Have a question about my skills, projects, or background? Choose a mode, or type “/” for suggested questions.",
+  modes: [
+    { id: "portfolio", label: "Portfolio", description: "Background, education, skills, training, and projects.", placeholder: "Ask about skills, projects, or background…" },
+    { id: "recommend", label: "Project match", description: "Describe what you want to build — get the most relevant project.", placeholder: "Describe what you're trying to build…" },
+    { id: "fit", label: "Career fit", description: "Paste a role or requirement — see which documented skills match.", placeholder: "Paste a role, project, or technical requirement…" },
+    { id: "work", label: "Ask about my work", description: "Open-ended follow-ups on projects, technologies, and contributions.", placeholder: "Ask a follow-up about a project or contribution…" },
+  ] as { id: AssistantMode; label: string; description: string; placeholder: string }[],
+  slashGroups: [
+    { label: "About My Background", items: ["What is Heba's background?", "What backend technologies has she used?"] },
+    { label: "Explore My Projects", items: ["Tell me about the CMWU project.", "What is the difference between FreelanGo and Edukate?", "Which projects demonstrate backend development skills?"] },
+    { label: "Find Relevant Skills", items: ["Which of Heba's skills match my project requirements?", "What AI and automation work has she completed?"] },
+  ],
   suggestions: [
     "What backend technologies has Heba used?",
     "Tell me about the CMWU project.",
@@ -236,6 +249,21 @@ export const assistant = {
   fallback:
     "I couldn't verify that information from the available portfolio content. Please contact Heba directly if you need further details.",
 };
+
+/** Short, evidence-only note for a skill badge, derived from the content above. */
+export function skillEvidence(skill: string, group: SkillGroup): string {
+  const s = skill.toLowerCase();
+  const hits = projects
+    .filter((p) => [...p.technologies, ...(p.features ?? [])].some((t) => {
+      const x = t.toLowerCase().replace(/\.$/, "");
+      return x.length >= 3 && (x.includes(s) || s.includes(x));
+    }))
+    .map((p) => p.title.split(" — ")[0]);
+  if (hits.length) return `Documented in: ${hits.join(", ")}.`;
+  if (group.kind === "foundation") return "Covered in Computer Systems Engineering coursework.";
+  if (group.name.startsWith("AI")) return "Practised in the AI & Intelligent Automation Training.";
+  return "Practised through Laravel training and project work.";
+}
 
 /** Builds the knowledge context the AI assistant answers from. */
 export function buildKnowledgeContext(): string {
