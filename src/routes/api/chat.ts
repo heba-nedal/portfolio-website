@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const key = process.env.LOVABLE_API_KEY;
+        const key = process.env["LOVABLE_API_KEY"];
         if (!key) return Response.json({ error: "The assistant is not configured yet (missing AI key)." }, { status: 500 });
 
         let messages: Msg[];
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/api/chat")({
         } catch {
           return Response.json({ error: "Invalid request." }, { status: 400 });
         }
-        if (!messages.length || messages[messages.length - 1].role !== "user")
+        if (!messages.length || messages[messages.length - 1]?.role !== "user")
           return Response.json({ error: "Please enter a question." }, { status: 400 });
 
         const upstream = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
