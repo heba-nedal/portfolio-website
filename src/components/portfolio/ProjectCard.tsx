@@ -46,7 +46,15 @@ export function ProjectCard({ p, index }: { p: Project; index: number }) {
           <DialogDescription className="sr-only">Verified project description, technologies, contribution, and status.</DialogDescription>
         </header>
         <div className="min-h-0 overflow-y-auto overscroll-contain px-5 py-6 sm:px-7" tabIndex={0} aria-label="Project details">
-          <p className="text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
+          <div className="aspect-video overflow-hidden rounded-lg border bg-surface">
+            <OptionalImage src={p.screenshot} alt={`${p.title} screenshot`} className="h-full w-full object-cover object-top" fallback={
+              <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground" role="img" aria-label={`${p.title}: screenshot not yet added`}>
+                <ImageIcon className="h-6 w-6 opacity-60" aria-hidden />
+                <span className="text-xs">Screenshot pending</span>
+              </div>
+            } />
+          </div>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
           <dl className="mt-6 space-y-6 text-sm leading-relaxed">
             <div><dt className="eyebrow mb-2">Technologies</dt><dd><ul className="flex flex-wrap gap-2">{p.technologies.map(t => <li key={t} className="chip">{t}</li>)}</ul></dd></div>
             <div><dt className="eyebrow mb-2">Problem</dt><dd className="text-muted-foreground">{p.problem}</dd></div>
