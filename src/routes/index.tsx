@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, ChevronDown, FileText, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
-import { profile, contact, skills, projects, experience, education, training, assistant, type Project } from "@/content/portfolioContent";
+import { ArrowRight, FileText, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { profile, contact, skills, projects, experience, education, training, assistant } from "@/content/portfolioContent";
 import { OptionalImage, useImageAvailable } from "@/components/portfolio/OptionalImage";
 import { Assistant } from "@/components/portfolio/Assistant";
+import { ProjectCard } from "@/components/portfolio/ProjectCard";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,9 +48,9 @@ function Header() {
             <li key={id}><a href={`#${id}`} className="transition-colors hover:text-foreground">{label}</a></li>
           ))}
         </ul>
-        <button className="grid h-10 w-10 place-items-center rounded-md border lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <Button variant="outline" size="icon" className="h-10 w-10 lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        </Button>
       </nav>
       {open && (
         <ul className="border-t px-5 py-3 lg:hidden">
@@ -66,7 +68,7 @@ function Hero() {
     <section id="home" className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 md:grid-cols-[1.4fr_1fr] md:py-28">
       <div>
         <p className="eyebrow mb-5">{profile.title}</p>
-        <h1 className="text-5xl font-medium leading-[1.05] sm:text-6xl">{profile.name}</h1>
+        <h1 className="text-4xl font-medium leading-[1.1] sm:text-6xl">{profile.name}</h1>
         <p className="mt-6 max-w-xl font-display text-xl italic text-foreground/90 sm:text-2xl">{profile.heroIntro}</p>
         <p className="mt-5 max-w-xl text-muted-foreground">{profile.heroSupport}</p>
         <p className="mt-5 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4" aria-hidden /> {profile.location}</p>
@@ -91,49 +93,6 @@ function Hero() {
         </div>
       </div>
     </section>
-  );
-}
-
-const kindLabel: Record<Project["categoryKind"], string> = { real: "border-primary text-primary", educational: "border-border text-secondary-foreground", training: "border-border text-muted-foreground" };
-
-function ProjectCard({ p, index }: { p: Project; index: number }) {
-  const [open, setOpen] = useState(false);
-  const detailsId = `project-${p.id}-details`;
-  return (
-    <article className="flex flex-col rounded-xl border bg-card p-6">
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <span className={`rounded-full border px-2.5 py-0.5 font-mono text-[0.7rem] uppercase tracking-wider ${kindLabel[p.categoryKind]}`}>{p.category}</span>
-        <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
-      </div>
-      <h3 className="text-2xl font-medium">{p.title}</h3>
-      {p.organization && <p className="mt-1 text-sm text-muted-foreground">{p.organization}</p>}
-      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
-      <ul className="mt-5 flex flex-wrap gap-2">{p.technologies.map((t) => <li key={t} className="chip">{t}</li>)}</ul>
-      <p className="mt-5 text-xs text-muted-foreground"><span className="text-foreground">Status:</span> {p.status}</p>
-      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-controls={detailsId} className="mt-5 inline-flex items-center gap-1.5 self-start text-sm font-medium text-primary hover:underline">
-        {open ? "Hide details" : "View details"} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <dl id={detailsId} className="mt-5 space-y-4 border-t pt-5 text-sm">
-          <div><dt className="eyebrow mb-1">Problem</dt><dd className="text-muted-foreground">{p.problem}</dd></div>
-          <div><dt className="eyebrow mb-1">Solution</dt><dd className="text-muted-foreground">{p.solution}</dd></div>
-          {p.role && <div><dt className="eyebrow mb-1">My role</dt><dd className="text-muted-foreground">{p.role}</dd></div>}
-          {p.features && (
-            <div><dt className="eyebrow mb-1">{p.categoryKind === "real" ? "Implementation areas" : "Documented features"}</dt>
-              <dd><ul className="ml-5 list-disc space-y-1 text-muted-foreground">{p.features.map((f) => <li key={f}>{f}</li>)}</ul></dd></div>
-          )}
-          {p.workflow && <div><dt className="eyebrow mb-1">Workflow</dt><dd className="text-muted-foreground">{p.workflow}</dd></div>}
-          {p.outcomes && <div><dt className="eyebrow mb-1">Documented outcomes</dt><dd><ul className="ml-5 list-disc text-muted-foreground">{p.outcomes.map((o) => <li key={o}>{o}</li>)}</ul></dd></div>}
-          {p.notes?.map((n) => <p key={n} className="rounded-md bg-secondary px-3 py-2 text-xs text-secondary-foreground">{n}</p>)}
-          {(p.repoUrl || p.demoUrl) && (
-            <div className="flex gap-4">
-              {p.repoUrl && <a href={p.repoUrl} {...ext} className="text-primary underline">Repository</a>}
-              {p.demoUrl && <a href={p.demoUrl} {...ext} className="text-primary underline">Live demo</a>}
-            </div>
-          )}
-        </dl>
-      )}
-    </article>
   );
 }
 
@@ -248,7 +207,7 @@ function Index() {
                   <ol className="mt-5 space-y-6">
                     {training.map((t) => (
                       <li key={t.title}>
-                        <div className="flex items-baseline justify-between gap-3">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <h4 className="font-medium">{t.title}</h4>
                           <span className="shrink-0 font-mono text-xs text-primary">{t.period}</span>
                         </div>
