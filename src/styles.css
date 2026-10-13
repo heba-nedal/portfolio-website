@@ -32,6 +32,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-surface: var(--surface);
+  --color-backdrop: var(--backdrop);
 }
 
 :root {
@@ -56,6 +57,7 @@
   --border: oklch(0.3 0.01 70);
   --input: oklch(0.32 0.01 70);
   --ring: oklch(0.78 0.12 70);
+  --backdrop: oklch(0.1 0.005 70 / 0.8);
 }
 
 @layer base {
@@ -67,8 +69,14 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; text-wrap: balance; }
+  p, dd { overflow-wrap: anywhere; }
   :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 @utility eyebrow {
