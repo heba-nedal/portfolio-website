@@ -10,7 +10,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 /** Returns the text typed after a trailing "/" trigger, or null when the trigger is inactive. */
 export function slashQuery(input: string): string | null {
   const m = input.match(/(?:^|\s)\/([^/]*)$/);
-  return m ? m[1] : null;
+  return m ? (m[1] ?? "") : null;
 }
 
 export function filterSlash(query: string) {
@@ -117,7 +117,7 @@ export function Assistant() {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (panelOpen) return pick(flat[active]);
+    if (panelOpen) return pick(flat[active] ?? "");
     ask(input);
   };
 
@@ -244,7 +244,7 @@ export function Assistant() {
                 if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => (a + 1) % flat.length); return; }
                 if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => (a - 1 + flat.length) % flat.length); return; }
                 if (e.key === "Escape") { e.preventDefault(); setDismissed(true); return; }
-                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); pick(flat[active]); return; }
+                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); pick(flat[active] ?? ""); return; }
               }
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
