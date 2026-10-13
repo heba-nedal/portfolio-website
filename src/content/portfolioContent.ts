@@ -63,6 +63,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "cmwu",
+    screenshot: "/images/projects/cmwu.jpg",
     title: "CMWU — Backend System Development",
     category: "Real-World Project",
     categoryKind: "real",
@@ -88,6 +89,7 @@ export const projects: Project[] = [
   },
   {
     id: "freelango",
+    screenshot: "/images/projects/freelango.jpg",
     title: "FreelanGo — Freelancing Platform",
     category: "Educational Project",
     categoryKind: "educational",
@@ -111,6 +113,7 @@ export const projects: Project[] = [
   },
   {
     id: "edukate",
+    screenshot: "/images/projects/edukate.jpg",
     title: "Edukate — Online Courses Platform",
     category: "Educational Project",
     categoryKind: "educational",
@@ -132,6 +135,7 @@ export const projects: Project[] = [
   },
   {
     id: "workshop-automation",
+    screenshot: "/images/projects/workshop-automation.jpg",
     title: "AI-Powered Workshop Registration Workflow",
     category: "AI and Automation Training Project",
     categoryKind: "training",

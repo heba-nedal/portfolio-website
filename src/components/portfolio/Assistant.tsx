@@ -1,7 +1,8 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import { ArrowUp, Loader2, MessageSquareText, Square } from "lucide-react";
 import { assistant } from "@/content/portfolioContent";
+import { Button } from "@/components/ui/button";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -12,6 +13,8 @@ export function Assistant() {
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => () => abortRef.current?.abort(), []);
 
   const scrollDown = () => requestAnimationFrame(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }));
 
@@ -51,12 +54,12 @@ export function Assistant() {
         setMessages([...history, { role: "assistant", content: acc }]);
         scrollDown();
       }
-      if (!acc.trim()) setMessages([...history, { role: "assistant", content: assistant.fallback }]);
+      if (!acc.trim()) throw new Error("The assistant returned no answer. Please try again later or contact Heba directly.");
     } catch (e) {
       if ((e as Error).name === "AbortError") {
         setMessages((m) => (m[m.length - 1]?.content ? m : m.slice(0, -1)));
       } else {
-        setMessages(history.slice(0, -1).concat(history.slice(-1)));
+        setMessages(history);
         setError(
           e instanceof TypeError
             ? "Network error — please check your connection and try again."
@@ -85,14 +88,15 @@ export function Assistant() {
             </div>
             <div className="flex flex-wrap gap-2">
               {assistant.suggestions.map((s) => (
-                <button
+                <Button
+                  variant="outline"
                   key={s}
                   type="button"
                   onClick={() => ask(s)}
-                  className="rounded-full border px-3 py-1.5 text-left text-sm text-secondary-foreground transition-colors hover:border-primary hover:text-primary"
+                  className="h-auto max-w-full whitespace-normal rounded-full border px-3 py-2 text-left text-sm text-secondary-foreground transition-colors hover:border-primary hover:text-primary"
                 >
                   {s}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -101,9 +105,9 @@ export function Assistant() {
             {messages.map((m, i) => (
               <li key={i} className={m.role === "user" ? "flex justify-end" : ""}>
                 {m.role === "user" ? (
-                  <p className="max-w-[85%] rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground">{m.content}</p>
+                  <p className="max-w-[85%] break-words rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground">{m.content}</p>
                 ) : m.content ? (
-                  <div className="prose-answer max-w-none text-sm leading-relaxed text-foreground [&_a]:text-primary [&_a]:underline [&_li]:ml-5 [&_li]:list-disc [&_p]:mb-2 [&_strong]:text-foreground [&_ul]:mb-2">
+                  <div className="prose-answer max-w-none break-words text-sm leading-relaxed text-foreground [&_a]:text-primary [&_a]:underline [&_li]:ml-5 [&_li]:list-disc [&_p]:mb-2 [&_strong]:text-foreground [&_ul]:mb-2">
                     <ReactMarkdown>{m.content}</ReactMarkdown>
                   </div>
                 ) : (
@@ -138,16 +142,16 @@ export function Assistant() {
           rows={1}
           maxLength={1000}
           placeholder="Ask about skills, projects, or background…"
-          className="max-h-32 min-h-11 flex-1 resize-none rounded-md border bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="max-h-32 min-h-11 min-w-0 flex-1 resize-none rounded-md border bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
         {loading ? (
-          <button type="button" onClick={() => abortRef.current?.abort()} aria-label="Stop" className="grid h-11 w-11 shrink-0 place-items-center rounded-md border text-foreground hover:bg-accent">
+          <Button variant="outline" size="icon" type="button" onClick={() => abortRef.current?.abort()} aria-label="Stop" className="grid h-11 w-11 shrink-0 place-items-center rounded-md border text-foreground hover:bg-accent">
             <Square className="h-4 w-4" />
-          </button>
+          </Button>
         ) : (
-          <button type="submit" aria-label="Send question" className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground hover:opacity-90">
+          <Button size="icon" type="submit" aria-label="Send question" className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground hover:opacity-90">
             <ArrowUp className="h-4 w-4" />
-          </button>
+          </Button>
         )}
       </form>
     </div>
