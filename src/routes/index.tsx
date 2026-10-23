@@ -1,7 +1,7 @@
 import type React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Bot, Braces, Database, FileText, Layers, Server, type LucideIcon, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { ArrowRight, Bot, Braces, Database, Download, FileText, Layers, Server, type LucideIcon, Github, GraduationCap, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { profile, contact, skills, projects, experience, education, training, assistant } from "@/content/portfolioContent";
 import { OptionalImage, useImageAvailable } from "@/components/portfolio/OptionalImage";
@@ -85,6 +85,7 @@ function Hero() {
         <p className="mt-5 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4" aria-hidden /> {profile.location}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <a href="#projects" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">View My Projects <ArrowRight className="h-4 w-4" /></a>
+          <a href={contact.cv} download="Heba_Ismail_ATS_CV.pdf" className="inline-flex items-center gap-2 rounded-md border border-primary/40 px-5 py-3 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10">Download CV <Download className="h-4 w-4" aria-hidden /></a>
           <a href="#assistant" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Ask My AI Assistant</a>
           <a href="#contact" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Contact Me</a>
         </div>
@@ -157,7 +158,7 @@ function Index() {
 
         <section id="skills" className="border-t">
           <div className="mx-auto max-w-6xl px-5 py-20">
-            <SectionHead eyebrow="02 — Skills" title="Skills & technologies" />
+            <SectionHead eyebrow="02 — Skills" title="Skills and Technologies" />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {skills.map((g, idx) => {
                 const Icon = SKILL_ICONS[g.name] ?? Layers;
