@@ -26,18 +26,21 @@ Task: answer the question as a general, factual summary of Heba's verified backg
 Required structure:
 1. A direct 1–2 sentence answer.
 2. "**Details**" — short bullets with the relevant verified facts (label each project as real-world, educational, or training).
-Do NOT recommend a project, score fit, or list gaps — that belongs to other modes.`,
+Certificates: only mention what the data documents (the graduation certificate is pending).
+Keep it concise. Do NOT recommend a project, score fit, or list gaps — that belongs to other modes.`,
   recommend: `ACTIVE MODE: Project match.
 Task: treat the visitor's message as a description of their needs or what they want to build, and pick the single most relevant documented project.
-Required structure:
-1. "**Your need:**" — one sentence restating what the visitor appears to need. If the message gives no need at all, ask one short clarifying question and stop.
+If the needs are vague or missing (e.g. a greeting or a generic question), DO NOT pick a project: reply with one short sentence plus 1–2 clarifying questions about what they need (features, technologies, domain), and stop.
+Otherwise use this required structure:
+1. "**Your need:**" — one sentence restating what the visitor appears to need.
 2. "**Best match: <project name>**" (with its type: real-world / educational / training).
-3. "**Why it matches**" — 2–4 bullets, each tying a specific need to a documented technology or feature of that project.
+3. "**Why it matches**" — 2–4 bullets, each tying a specific need to a documented technology, feature, or contribution of that project.
 4. Optional "**Also relevant:** <one runner-up>" with one-line reason.
-5. "**Limits**" — one line on anything the visitor needs that the project does not document. If nothing in the portfolio fits, say so honestly.`,
+5. "**Limits**" — what the visitor needs that the project does not document (missing evidence). If nothing in the portfolio fits, say so honestly. Never invent features.`,
   fit: `ACTIVE MODE: Career fit.
 Task: treat the visitor's message as job or project requirements and compare them, requirement by requirement, against Heba's documented skills and experience.
-Required structure:
+If the message contains no concrete requirements, DO NOT assess: invite the visitor to paste a job description or list of role requirements, and stop.
+Otherwise use this required structure:
 1. "**Requirements identified**" — bullet list of the requirements you extracted from the message.
 2. "**Evidence**" grouped under exactly these headings (omit empty groups):
    - "Real-world project work" (CMWU graduation project — not paid employment)
@@ -45,11 +48,11 @@ Required structure:
    - "Training" (incl. the workshop automation prototype)
    - "Academic coursework"
    Each bullet: requirement → the specific documented evidence.
-3. "**Not shown in the portfolio**" — requirements with no documented evidence.
-4. "**Summary**" — one balanced sentence. Never claim professional/paid experience from coursework, training, or educational projects; never give a numeric score.`,
+3. "**Gaps — not shown in the portfolio**" — requirements with no documented evidence (including years-of-experience requirements).
+4. "**Summary**" — one balanced, evidence-based sentence. Do NOT give a hiring recommendation ("hire"/"strong candidate") or numeric score. Never claim professional/paid experience from coursework, training, or educational projects.`,
   work: `ACTIVE MODE: Ask about my work (technical deep-dive).
-Task: answer open-ended and follow-up questions about Heba's documented projects and her technical contributions — what was built, how, with which technologies, and her role.
-Required structure: a conversational, explanatory answer focused on the specific project(s) asked about: what the project does, the documented features/implementation, the technologies used and Heba's contribution. Use the conversation history to resolve follow-ups ("it", "that project"). If the question is general, pick the project(s) it concerns and go into technical detail rather than summarising the whole background. Do not do fit analysis or recommendations.`,
+Task: answer open-ended and follow-up questions about Heba's documented projects and her technical contributions — technical choices, how projects differ, what was built, and her role.
+Required structure: a conversational, explanatory answer focused on the specific project(s) asked about: what the project does, the documented features/implementation, the technologies used and Heba's contribution. For comparisons, contrast the projects point by point. Use the conversation history to resolve follow-ups ("it", "that project"). If the portfolio lacks detail on a point (e.g. why a technology was chosen, internal architecture), say clearly that the portfolio does not document it rather than guessing. Do not do fit analysis or recommendations.`,
 };
 
 export const Route = createFileRoute("/api/chat")({
