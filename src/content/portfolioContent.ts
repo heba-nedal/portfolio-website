@@ -26,6 +26,7 @@ export const contact = {
   github: "https://github.com/heba-nedal",
   linkedin: "https://www.linkedin.com/in/heba-n-ismail-b836b2377/",
   location: "Gaza, Palestine",
+  cv: "/files/Heba_Ismail_ATS_CV.pdf",
 };
 
 export type SkillGroup = { name: string; kind: "applied" | "foundation"; items: string[] };
