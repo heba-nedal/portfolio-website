@@ -83,11 +83,11 @@ function Hero() {
         <p className="mt-6 max-w-xl font-display text-xl italic text-foreground/90 sm:text-2xl">{profile.heroIntro}</p>
         <p className="mt-5 max-w-xl text-muted-foreground">{profile.heroSupport}</p>
         <p className="mt-5 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4" aria-hidden /> {profile.location}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a href="#projects" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">View My Projects <ArrowRight className="h-4 w-4" /></a>
-          <a href={contact.cv} download="Heba_Ismail_ATS_CV.pdf" className="inline-flex items-center gap-2 rounded-md border border-primary/40 px-5 py-3 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10">Download CV <Download className="h-4 w-4" aria-hidden /></a>
-          <a href="#assistant" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Ask My AI Assistant</a>
-          <a href="#contact" className="rounded-md border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Contact Me</a>
+        <div className="mt-8 grid max-w-xl grid-cols-1 gap-2.5 min-[400px]:grid-cols-2 min-[1160px]:max-w-none min-[1160px]:flex min-[1160px]:flex-wrap">
+          <a href="#projects" className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">View My Projects <ArrowRight className="h-4 w-4" /></a>
+          <a href={contact.cv} download="Heba_Ismail_ATS_CV.pdf" className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-primary/40 px-4 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10">Download CV <Download className="h-4 w-4" aria-hidden /></a>
+          <a href="#contact" className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-md border px-4 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Contact Me</a>
+          <a href="#assistant" className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-md border px-4 text-sm font-medium transition-colors hover:border-primary hover:text-primary">Ask My AI Assistant</a>
         </div>
       </div>
       <div className="mx-auto w-full max-w-xs">
@@ -205,7 +205,7 @@ function Index() {
 
         <section id="education" className="border-t">
           <div className="mx-auto max-w-6xl px-5 py-20">
-            <SectionHead eyebrow="05 — Education" title="Education & training" />
+            <SectionHead eyebrow="05 — Education" title="Education and Training" />
             <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
               <article className="rounded-xl border bg-card p-6">
                 <p className="eyebrow">University · {u.year}</p>
