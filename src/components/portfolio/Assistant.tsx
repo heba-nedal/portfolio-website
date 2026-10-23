@@ -152,7 +152,7 @@ export function Assistant() {
               Answers are based only on the verified content of this portfolio.
             </div>
             <div className="flex flex-wrap gap-2">
-              {assistant.suggestions.map((s) => (
+              {current.suggestions.map((s) => (
                 <Button
                   variant="outline"
                   key={s}

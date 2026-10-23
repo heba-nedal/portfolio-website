@@ -229,11 +229,31 @@ export const assistant = {
   title: "Ask Me About My Work",
   subtitle: "Have a question about my skills, projects, or background? Choose a mode, or type “/” for suggested questions.",
   modes: [
-    { id: "portfolio", label: "Portfolio", description: "Background, education, skills, training, and projects.", placeholder: "Ask about skills, projects, or background…" },
-    { id: "recommend", label: "Project match", description: "Describe what you want to build — get the most relevant project.", placeholder: "Describe what you're trying to build…" },
-    { id: "fit", label: "Career fit", description: "Paste a role or requirement — see which documented skills match.", placeholder: "Paste a role, project, or technical requirement…" },
-    { id: "work", label: "Ask about my work", description: "Open-ended follow-ups on projects, technologies, and contributions.", placeholder: "Ask a follow-up about a project or contribution…" },
-  ] as { id: AssistantMode; label: string; description: string; placeholder: string }[],
+    {
+      id: "portfolio", label: "Portfolio",
+      description: "Factual answers about Heba's verified skills, education, training, and projects.",
+      placeholder: "Ask about skills, education, training, or projects…",
+      suggestions: ["What backend technologies has Heba used?", "What is Heba's education?", "What training has Heba completed?", "How can I contact Heba?"],
+    },
+    {
+      id: "recommend", label: "Project match",
+      description: "Describe your needs — get the best-matching documented project, why it fits, and its limits.",
+      placeholder: "Describe what you need or want to build…",
+      suggestions: ["I need a Laravel system with user roles and an admin dashboard.", "I want to automate a workflow with AI tools.", "I'm looking for a marketplace-style web platform."],
+    },
+    {
+      id: "fit", label: "Career fit",
+      description: "Paste a job description or role requirements — see matching evidence and gaps.",
+      placeholder: "Paste a job description or list of requirements…",
+      suggestions: ["Junior Laravel developer: PHP, MySQL, REST APIs, Git.", "Backend developer: Node.js, Docker, AWS, 2+ years experience.", "AI automation intern: Zapier, prompt engineering, workflows."],
+    },
+    {
+      id: "work", label: "Ask about my work",
+      description: "Deeper questions and follow-ups on technical choices, project differences, and contributions.",
+      placeholder: "Ask a deeper or follow-up question about a project…",
+      suggestions: ["What did Heba personally build in the CMWU project?", "How do FreelanGo and Edukate differ technically?", "How does the workshop automation prototype work?"],
+    },
+  ] as { id: AssistantMode; label: string; description: string; placeholder: string; suggestions: string[] }[],
   slashGroups: [
     { label: "About My Background", items: ["What is Heba's background?", "What backend technologies has she used?"] },
     { label: "Explore My Projects", items: ["Tell me about the CMWU project.", "What is the difference between FreelanGo and Edukate?", "Which projects demonstrate backend development skills?"] },
